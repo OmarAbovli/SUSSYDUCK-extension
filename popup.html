@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+</head>
+<body class="sketch-theme">
+  <div class="paper">
+
+    <div class="sketch-header">
+      <div class="lang-switch-sketch">
+        <span id="labelEn" class="active">EN</span>
+        <span id="labelAr">AR</span>
+      </div>
+      <div class="header-controls">
+         <button id="settingsBtn" class="icon-btn">⚙️</button>
+         <button id="themeBtn" class="icon-btn">🌗</button>
+         <button id="powerBtn" class="icon-btn power-off">OFF</button>
+      </div>
+    </div>
+
+    <!-- Main View Contents -->
+    <div id="mainView">
+      <div class="duck-illustration">
+         <div id="pixelDuck" class="pixel-duck-mini"></div>
+         <h1 class="handwritten">Sassy Duck</h1>
+      </div>
+
+      <div class="stats-sketch">
+         <div class="stat-line">
+           <span class="stat-name label-anger">Anger</span>
+           <div class="ink-bar"><div id="barAnger" class="ink-fill"></div></div>
+         </div>
+         <div class="stat-line">
+           <span class="stat-name label-happiness">Happy</span>
+           <div class="ink-bar"><div id="barHappiness" class="ink-fill"></div></div>
+         </div>
+         <div class="stat-line">
+           <span class="stat-name label-sleepiness">Sleepy</span>
+           <div class="ink-bar"><div id="barSleepiness" class="ink-fill"></div></div>
+         </div>
+      </div>
+
+      <div class="tools-sketch">
+          <button id="btnFood" class="ink-btn-rect">FOOD</button>
+          <button id="btnClean" class="ink-btn-rect">CLEAN</button>
+          <button id="btnGun" class="ink-btn-rect">AKM</button>
+      </div>
+
+      <div class="chat-container-sketch">
+         <div id="chatMessages" class="chat-logs"></div>
+         <div class="input-area-sketch">
+            <input type="text" id="chatInput" placeholder="Scribble something...">
+            <button id="sendBtn">✒️</button>
+         </div>
+      </div>
+
+      <div class="bottom-info">
+         <p class="status-indicator">Engine: <span id="stateText">OFFLINE</span></p>
+      </div>
+    </div>
+
+    <!-- Settings/API View -->
+    <div id="settingsView" style="display: none;">
+       <h2 class="handwritten center">AI Settings</h2>
+       <div class="settings-content">
+          <p class="sketch-label">Groq API Key:</p>
+          <input type="password" id="groqApiKey" class="ink-input-full" placeholder="gsk_...">
+          <button id="saveApiBtn" class="ink-btn-rect primary-btn">SAVE API</button>
+          <button id="backBtn" class="ink-btn-rect">BACK</button>
+       </div>
+       <p class="sketch-hint">Get your key at console.groq.com</p>
+    </div>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

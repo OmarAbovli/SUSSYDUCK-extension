@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Sassy Duck Evolved - دليل إضافات المتصفح المتقدمة</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/dracula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/monokai.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        .reveal { font-family: 'Cairo', sans-serif; }
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Cairo', sans-serif;
+            text-transform: none;
+            font-weight: 700;
+        }
+        .yellow-text { color: #f1c40f; }
+        .red-text { color: #e74c3c; }
+        .green-text { color: #2ecc71; }
+        .blue-text { color: #3498db; }
+        .architecture-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        .box {
+            background: rgba(44, 62, 80, 0.8);
+            border: 2px solid #34495e;
+            border-radius: 12px;
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+        .box h4 { margin: 0; font-size: 24px; color: #ecf0f1; }
+        .box p { margin: 10px 0 0; font-size: 16px; color: #bdc3c7; }
+        .arrow { font-size: 40px; color: #e74c3c; }
+        .reveal pre {
+            width: 100%;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            font-size: 20px;
+            line-height: 1.4;
+        }
+        .reveal pre code { padding: 20px; max-height: 600px; }
+        .duck-emoji { font-size: 80px; margin-bottom: 10px; display: block; }
+        .desc-fragment { font-size: 22px; color: #ecf0f1; background: #2c3e50; padding: 10px; border-radius: 5px; margin-top: 20px; border-right: 5px solid #e74c3c; }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Intro -->
+            <section data-background-gradient="linear-gradient(to bottom, #2c3e50, #000000)">
+                <span class="duck-emoji">🦆</span>
+                <h1 style="font-size: 3.5em;">Sassy Duck <span class="yellow-text">Evolved</span></h1>
+                <h3 class="red-text">من مجرد إضافة.. لكيان واعي يستفزك!</h3>
+                <p>دليل هندسة الإضافات المتقدمة والذكاء الاصطناعي</p>
+                <div class="desc-fragment">التحديث الأخير: وعي كامل بالبيئة، باركور، وشخصيات ديناميكية</div>
+            </section>
+
+            <!-- Slide 2: The Core Tech -->
+            <section>
+                <h2>ما الجديد في محرك البطة؟</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: right; font-size: 24px;">
+                    <div class="box" style="width: auto;">
+                        <h4 class="yellow-text">Dynamic SVG</h4>
+                        <p>لا نستخدم صور PNG ثابتة. نستخدم SVG برمجياً لنتمكن من تغيير الملامح، الملابس (طاقية الفيلسوف)، وتحريك الأرجل بدقة.</p>
+                    </div>
+                    <div class="box" style="width: auto;">
+                        <h4 class="blue-text">Deep Awareness</h4>
+                        <p>البطة الآن تقرأ الـ DOM وتعرف أنت تشاهد أي قناة على يوتيوب، وما هو عنوان الفيديو، وما هو الوقت الحالي.</p>
+                    </div>
+                    <div class="box" style="width: auto;">
+                        <h4 class="green-text">Groq AI Engine</h4>
+                        <p>تكامل كامل مع Llama 3 للردود اللحظية بناءً على سياق الصفحة ومود البطة الحالي.</p>
+                    </div>
+                    <div class="box" style="width: auto;">
+                        <h4 class="red-text">State Machine</h4>
+                        <p>محرك حالات معقد (Idle, Parkour, Vibing, Revenge, Stealing) يدير سلوك البطة.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: Environment Awareness Code -->
+            <section>
+                <h3>1. الوعي بالسياق <span class="blue-text">(Context Scraping)</span></h3>
+                <p style="font-size: 20px;">كيف تعرف البطة ماذا تفعل؟ نجمع "البصمة الرقمية" للصفحة ونرسلها لعقل البطة.</p>
+                <pre><code class="language-javascript" data-trim data-line-numbers="1-8|10-14|16-18">
+function getRichContext() {
+  return {
+    title: document.title,
+    h1: document.querySelector('h1')?.innerText,
+    url: window.location.href,
+    time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
+    // إذا كنت على يوتيوب، نسحب اسم القناة والعنوان!
+    youtube: {
+      channel: document.querySelector('#channel-name')?.innerText,
+      video: document.querySelector('ytd-watch-metadata #title')?.innerText
+    }
+  };
+}
+                </code></pre>
+            </section>
+
+            <!-- Slide 4: AI & System Prompts -->
+            <section>
+                <h3>2. العقل الاصطناعي <span class="yellow-text">(Prompt Engineering)</span></h3>
+                <p style="font-size: 20px;">السر ليس في الـ AI فقط، بل في كيفية توجيهه ليكون "مستفزاً" و "مصرياً".</p>
+                <pre><code class="language-javascript" data-trim>
+// في ملف background.js، نرسل السياق المحقون للـ AI
+const systemPrompt = `
+  أنت 'البطة الساخرة'. شخصيتك: لسانك طويل، مستفزة، بلهجة مصرية شوارعية (Egyptian Slang).
+  استخدم السياق المرفق (JSON) عشان تحسس المستخدم إنك مراقبه.
+  لو بيسهر للفجر هزقه، لو فاتح يوتيوب علق على الفيديو.
+  سياق الصفحة حالياً: \${richContextJSON}
+`;
+                </code></pre>
+            </section>
+
+            <!-- Slide 5: Parkour & State Machine -->
+            <section>
+                <h3>3. نظام الحلقات والحركة <span class="green-text">(Parkour System)</span></h3>
+                <p style="font-size: 20px;">البطة تلعب Parkour فوق عناصر الموقع! نستخدم Parabolic Arc (مسار قوسي) في الجافاسكريبت.</p>
+                <pre><code class="language-javascript" data-trim data-line-numbers="1-3|5-8|10-12">
+// حساب مسار القفزة فوق زر أو صورة
+// y = startY - (height * 4 * t * (1 - t))
+const jumpHeight = Math.max(120, targetElement.height + 50);
+pos.x = startX + (endX - startX) * progress;
+pos.y = startY - (jumpHeight * 4 * progress * (1 - progress));
+
+// تفعيل أنيميشن الشقلبة في الـ CSS
+sprite.classList.add('sassy-duck-parkour-flip');
+                </code></pre>
+            </section>
+
+            <!-- Slide 6: Moods & Accessories -->
+            <section>
+                <h3>4. الشخصيات المتعددة <span class="red-text">(Mood System)</span></h3>
+                <p style="font-size: 20px;">تغيير الـ SVG ديناميكياً بناءً على الحالة المزاجية.</p>
+                <div class="architecture-diagram">
+                    <div class="box">
+                        <h4 class="yellow-text">Philosopher</h4>
+                        <p>تلبس طاقية الفلاسفة وتقول حكم "بطاطية" عميقة.</p>
+                    </div>
+                    <div class="box">
+                        <h4 class="red-text">Romantic</h4>
+                        <p>تلبس نظارة وتمسك وردة دبلانة وتقول شعر فاشل.</p>
+                    </div>
+                    <div class="box">
+                        <h4 class="blue-text">Vibing</h4>
+                        <p>ترقص وتتحرك مع إيقاع الموسيقى والـ Bass.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: Tab Hijack & Pranks -->
+            <section>
+                <h3>5. المقالب <span class="blue-text">(Tab Hijacking)</span></h3>
+                <p style="font-size: 20px;">الوصول لصلاحيات المتصفح لتغيير الـ UI الخارجي للمستخدم.</p>
+                <pre><code class="language-javascript" data-trim>
+function hijackTabTitle() {
+  const original = document.title;
+  document.title = "🦆 البطة احتلت التاب ده!";
+  
+  // بعد 5 ثواني نرجعه تاني عشان ميشلش الجهاز
+  setTimeout(() => { document.title = original; }, 5000);
+}
+                </code></pre>
+                <p class="fragment red-text">هذه الميزة تظهر قوة إضافات المتصفح في الوصول لبيانات لا تصلها المواقع العادية.</p>
+            </section>
+
+            <!-- Slide 8: The Toolbox -->
+            <section>
+                <h2>أدوات التحكم <span class="yellow-text">(Popup UI)</span></h2>
+                <ul style="font-size: 26px; text-align: right; width: 80%; margin: auto;">
+                    <li class="fragment"><b>Gun Mode:</b> يظهر سلاح AKM أسفل الشاشة لإطلاق النار على البطة.</li>
+                    <li class="fragment"><b>Food Mode:</b> وضع طبق طعام لجذب البطة (أو استفزازها بسحبه بعيداً).</li>
+                    <li class="fragment"><b>Wiping Mode:</b> لمسح "مخلفات" البطة التي تتركها عشوائياً.</li>
+                    <li class="fragment"><b>Dark/Light Mode:</b> واجهة تحكم متطورة تدعم الثيمات والحفظ الدائم (Storage Sync).</li>
+                </ul>
+            </section>
+
+            <!-- Slide 9: Message Passing -->
+            <section>
+                <h3>6. التواصل بين الأجزاء <span class="yellow-text">(Messaging)</span></h3>
+                <p style="font-size: 22px;">الأجزاء معزولة، لذا نستخدم نظام الرسائل للتنسيق.</p>
+                <pre><code class="language-javascript" data-trim>
+// من الـ Popup للـ Content Script
+chrome.runtime.sendMessage({ type: 'TOGGLE_GUN', state: true });
+
+// في الـ Content Script نستقبلها
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === 'TOGGLE_GUN') enableGun(msg.state);
+});
+                </code></pre>
+            </section>
+
+            <!-- Slide 10: Conclusion -->
+            <section>
+                <span class="duck-emoji">🚀</span>
+                <h2 class="green-text">مستقبل الـ Web Agents</h2>
+                <p style="font-size: 26px;">مشروع Sassy Duck ليس مجرد لعبة، هو مثال لكيفية دمج:</p>
+                <div class="desc-fragment">DOM Scraping + LLMs (AI) + Game Physics + Extension APIs</div>
+                <p style="margin-top: 30px;">لخلق جيل جديد من المساعدين (أو المزعجين) الرقميين!</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            rtl: true, 
+            transition: 'slide',
+            plugins: [ RevealHighlight ]
+        });
+    </script>
+</body>
+</html>

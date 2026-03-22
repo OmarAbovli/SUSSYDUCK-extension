@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Sassy Browser Duck",
+  "version": "1.0",
+  "description": "A rogue cartoon duck that wanders around your browser and causes chaos.",
+  
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  
+  "host_permissions": ["*://*/*"],
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "assets/duck.png"
+  },
+  
+  "icons": {
+    "16": "assets/duck.png",
+    "48": "assets/duck.png",
+    "128": "assets/duck.png"
+  },
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["roasts.js", "content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/duck.png"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

@@ -1,0 +1,455 @@
+/* 
+==============================================
+التنسيقات الأساسية الخاصة بإضافة البطة المستفزة
+==============================================
+*/
+
+/* الحاوية الرئيسية (Container) التي تضم البطة وفقاعة الكلام. 
+   نجعلها ثابتة (fixed) لتطفو فوق الموقع الأصلي ولا تدمر تصميمه. */
+.sassy-duck-container {
+  position: fixed;
+  z-index: 2147483647; /* أعلى طبقة ممكنة فوق كل المواقع لكي لا يُخفيها شيء */
+  pointer-events: none; /* لا تتفاعل مع نقرات الماوس (نُفعّل التفاعل للصورة فقط لاحقاً) */
+  width: 100px;
+  height: 100px;
+  top: 0;
+  left: 0;
+  will-change: transform; /* تخبر المتصفح أن هذا العنصر سيتحرك كثيراً لكي يقوم بتسريع أدائه الرسومي */
+}
+
+/* صورة البطة نفسها المشتقة من الـ SVG */
+.sassy-duck-sprite {
+  width: 100%;
+  height: 100%;
+  pointer-events: auto; /* هنا نعيد تفعيل تفاعل الماوس لكي نتمكن من النقر على البطة وضربها */
+  cursor: grab; /* يغير شكل الماوس ليد (يد تمسك) عندما نؤشر على البطة */
+  transform-origin: bottom center; /* مركز التحول (الأنيميشن) من أسفل المنتصف لتبدو كأنها تقفز على الأرض */
+  transition: filter 0.2s; /* أنيميشن ناعم لتغيير الألوان (مثل الغضب أو الموت) */
+}
+
+/* عندما نمسك البطة بالفعل (سحب وإفلات) يتغير الماوس ليد مقبوضة */
+.sassy-duck-sprite.dragging {
+  cursor: grabbing;
+}
+
+/* ضبط حجم رسمة البطة وإضافة ظل واقعي (Drop Shadow) لتبدو مجسمة فوق الموقع */
+.duck-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 5px rgba(0,0,0,0.5));
+  image-rendering: pixelated; /* لضمان عدم تشوش الأطراف وللحفاظ على الطابع الـ 8-Bit القديم والمميز */
+}
+
+/* الأجزاء الأساسية من الرسمة: الأرجل تتحرك من الأعلى، والرأس والجسم يتحولان بنعومة */
+.duck-leg { transform-origin: center top; }
+.duck-head, .duck-body, .duck-beak { transition: transform 0.2s, fill 0.2s; }
+.duck-eyebrow { transition: opacity 0.2s; }
+.acc-philosopher-hat, .acc-romantic-glasses, .acc-dead-rose { transition: opacity 0.3s, transform 0.3s; }
+
+/* قطرة العرق التي تدل على الغضب، تتحرك صعوداً ونزولاً باستمرار */
+.duck-sweat { transition: opacity 0.2s; animation: floatSweep 1s infinite alternate; }
+
+/* دالة الانعكاس لتوجيه الرأس إلى اليسار عندما تمشي البطة يساراً */
+.sassy-duck-facing-left { transform: scaleX(-1); }
+
+/* إخفاء الماوس تماماً حينما تقوم البطة "بسرقة" الماوس منك (مقلب شديد الاستفزاز!) */
+body.sassy-duck-no-cursor, body.sassy-duck-no-cursor * {
+  cursor: none !important;
+}
+
+/* 
+==============================================
+الرسوم المتحركة (Animations) الخاصة بحركات البطة
+==============================================
+*/
+
+/* تحريك الرجل اليسرى: قفزة خفيفة للأعلى مع دوران للقدم */
+@keyframes walk-left {
+  0% { transform: translateY(0); } 
+  50% { transform: translateY(-5px) rotate(10deg); } 
+  100% { transform: translateY(0); }
+}
+
+/* تحريك الرجل اليمنى: قفزة معاكسة للأولى ليظهر المشي واقعياً */
+@keyframes walk-right {
+  0% { transform: translateY(-5px) rotate(-10deg); } 
+  50% { transform: translateY(0); } 
+  100% { transform: translateY(-5px) rotate(-10deg); }
+}
+
+/* قفزة بسيطة لكامل الجسم (Body Hop) تحدث مع كل خطوة */
+@keyframes body-hop {
+  0% { transform: translateY(0); } 
+  50% { transform: translateY(-2px); } 
+  100% { transform: translateY(0); }
+}
+
+/* تخصيص سرعة الأنيميشن لحالة البطة وهي "تتمشى" بهدوء (Waddling) */
+.sassy-duck-waddling .left-leg { animation: walk-left 0.2s infinite; }
+.sassy-duck-waddling .right-leg { animation: walk-right 0.2s infinite; }
+.sassy-duck-waddling .duck-body-group { animation: body-hop 0.2s infinite; }
+
+/* تخصيص السرعة أسرع بمرتين لحالة "الركض" السريع وراء الماوس (Running) مع إمالة الجسم للأمام */
+.sassy-duck-running .left-leg { animation: walk-left 0.1s infinite; }
+.sassy-duck-running .right-leg { animation: walk-right 0.1s infinite; }
+.sassy-duck-running .duck-body-group { transform: rotate(5deg); }
+
+/* رقص البطة عند سماع الموسيقى (Happy Dance / VIBING) */
+@keyframes duck-dance-bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25%  { transform: translateY(-12px) rotate(-8deg); }
+  50%  { transform: translateY(-3px) rotate(0deg); }
+  75%  { transform: translateY(-12px) rotate(8deg); }
+}
+
+@keyframes duck-dance-legs {
+  0%, 100% { transform: rotate(0deg); }
+  25%  { transform: rotate(25deg); }
+  75%  { transform: rotate(-25deg); }
+}
+
+.sassy-duck-happy-dance .duck-body-group { 
+  animation: duck-dance-bounce 0.5s infinite ease-in-out; 
+}
+.sassy-duck-happy-dance .left-leg { 
+  animation: duck-dance-legs 0.25s infinite; 
+}
+.sassy-duck-happy-dance .right-leg { 
+  animation: duck-dance-legs 0.25s infinite reverse; 
+}
+.sassy-duck-happy-dance .duck-wing { 
+  opacity: 1 !important; 
+  animation: duck-dance-legs 0.3s infinite alternate; 
+}
+
+/* PARKOUR: Flip animation during jump */
+@keyframes parkour-flip {
+  0%   { transform: rotate(0deg) scale(1); }
+  25%  { transform: rotate(-90deg) scale(1.15); }
+  50%  { transform: rotate(-180deg) scale(1.2); }
+  75%  { transform: rotate(-270deg) scale(1.15); }
+  100% { transform: rotate(-360deg) scale(1); }
+}
+
+@keyframes parkour-land-bounce {
+  0%   { transform: scaleY(0.6) scaleX(1.3) translateY(10px); }
+  40%  { transform: scaleY(1.15) scaleX(0.9) translateY(-5px); }
+  70%  { transform: scaleY(0.95) scaleX(1.05) translateY(2px); }
+  100% { transform: scaleY(1) scaleX(1) translateY(0); }
+}
+
+.sassy-duck-parkour-flip .duck-body-group {
+  animation: parkour-flip 0.55s linear;
+  transform-origin: center center;
+}
+.sassy-duck-parkour-flip .left-leg,
+.sassy-duck-parkour-flip .right-leg {
+  opacity: 0; /* Hide legs during flip for cleaner look */
+}
+
+.sassy-duck-parkour-land .duck-body-group {
+  animation: parkour-land-bounce 0.5s ease-out;
+}
+
+
+/* حالة الغضب الشديد: فلتر يلون البطة باللون الأحمر المحتقن (Sepia + Hue Rotate) */
+.sassy-duck-angry .duck-body-group { filter: brightness(0.8) sepia(1) hue-rotate(-50deg) saturate(2); }
+
+/* أنيميشن لحروف (Zzz) التي تتطاير للأعلى أثناء نوم البطة ثم تختفي */
+@keyframes floatZzz {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-20px) scale(1.2); opacity: 0; }
+}
+
+/* حالة النوم: إمالة الرأس للأسفل وإظهار حرف الـ Z المتطاير */
+.sassy-duck-sleeping .duck-zzz { opacity: 1; animation: floatZzz 2s infinite; }
+.sassy-duck-sleeping .duck-body-group { transform: translateY(10px) rotate(15deg); transform-origin: center; }
+.sassy-duck-sleeping .left-leg, .sassy-duck-sleeping .right-leg { transform: rotate(10deg); }
+
+/* حالة استيلاء البطة على الماوس: إظهار الماوس الصغير الممسوك كرهينة! */
+.sassy-duck-holding .held-mouse { opacity: 1; }
+.sassy-duck-holding .duck-body-group { transform: rotate(-5deg); transform-origin: center; }
+
+/* دالة الانعكاس لتوجيه الرأس إلى اليسار عندما تمشي البطة يساراً */
+.sassy-duck-facing-left { transform: scaleX(-1); }
+
+/* 
+==============================================
+تصميم قنبلة الروث الخاصة بالبطة (Poop)
+==============================================
+*/
+.sassy-duck-poop {
+  position: absolute;
+  font-size: 30px;
+  z-index: 2147483640; /* نجعلها خلف البطة مباشرةً (Z-index أقل من الحاوية الأصلية) */
+  pointer-events: auto;
+  cursor: pointer;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+  animation: poop-drop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+/* أنيميشن السقوط: يبدأ صغيراً ومخفياً ويكبر وينزل للأسفل */
+@keyframes poop-drop {
+  0% { transform: translateY(-20px) scale(0.5); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+/* تأثير التحويم عند وضع الماوس على الروث يجعله يهتز قليلاً */
+.sassy-duck-poop:hover { transform: scale(1.2) rotate(10deg); }
+
+/* 
+==============================================
+فقاعة السخرية والكلام (Speech Bubble)
+==============================================
+*/
+.sassy-duck-bubble {
+  position: absolute;
+  background: white;
+  color: black;
+  border: 3px solid #333;
+  border-radius: 15px;
+  padding: 10px 14px;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  max-width: 180px;
+  min-width: 80px;
+  text-align: center;
+  z-index: 2147483648;
+  box-shadow: 2px 3px 0px rgba(0,0,0,0.3);
+  bottom: calc(100% + 8px); /* الفقاعة فوق البطة مباشرة بمسافة 8px */
+  left: 50%;
+  transform: translateX(-50%) translateY(10px); /* مركزة أفقياً فوق الرأس */
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+/* المثلث يشير لأسفل باتجاه فم البطة */
+.sassy-duck-bubble::before { content: ''; position: absolute; bottom: -14px; left: 50%; margin-left: -14px; border-width: 14px 14px 0; border-style: solid; border-color: #333 transparent transparent transparent; }
+.sassy-duck-bubble::after  { content: ''; position: absolute; bottom: -9px;  left: 50%; margin-left: -10px; border-width: 10px 10px 0; border-style: solid; border-color: white transparent transparent transparent; }
+.sassy-duck-bubble.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.sassy-reply-input {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 4px;
+  font-size: 12px;
+  outline: none;
+  pointer-events: auto; /* السماح بالنقر داخل الفقاعة للكتابة */
+}
+.sassy-reply-input:focus { border-color: #e74c3c; }
+
+/* 
+==============================================
+أنيميشنات الرفس واللطافة (Kicking & Dancing)
+==============================================
+*/
+
+/* أنيميشن الرفس السريع يميناً ويساراً عند سحب البطة لمسافة طويلة بالماوس */
+@keyframes sassy-kick {
+  0% { transform: rotate(-30deg); }
+  50% { transform: rotate(30deg); }
+  100% { transform: rotate(-30deg); }
+}
+.sassy-duck-kicking .duck-body-group { animation: sassy-kick 0.1s infinite; }
+
+/* وضع تمسيح الدم أو الروث (Wiping Mode): يقوم بتغيير شكل المؤشر لرمز مناديل الورق بكل الصفحة */
+body.sassy-duck-wiping, body.sassy-duck-wiping * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="font-size:30px"><text y="28">Wipe</text></svg>') 16 16, auto !important;
+}
+
+/* وضع السلاح (Gun Mode): يغير المؤشر لرمز التقاطع العسكري للتصويب */
+body.sassy-duck-gun-mode, body.sassy-duck-gun-mode * {
+  cursor: crosshair !important;
+}
+
+/* وضع الطعام (Food Mode): الماوس يتحول لصحن طعام */
+body.sassy-duck-food-mode, body.sassy-duck-food-mode * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" style="font-size:20px; font-weight:bold;"><text y="28">FOOD</text></svg>') 16 16, auto !important;
+}
+
+/* الدماء المتناثرة عند قتلك للبطة بالسلاح الناري */
+.sassy-blood-splatter {
+  position: fixed;
+  width: 150px; height: 150px;
+  background: radial-gradient(circle, #8b0000 10%, #aa0000 40%, transparent 70%);
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  pointer-events: auto; /* لجعلها دماء تفاعلية (يمكننا النقر فوقها لمسحها) */
+  z-index: 2147483647;
+  opacity: 0.85;
+  filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.5));
+  cursor: default;
+}
+
+/* حفرة الرصاص الحقيقة في الشاشة */
+.sassy-bullet-hole {
+  position: fixed;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2147483646;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));
+  opacity: 0.8;
+}
+.sassy-bullet-hole svg { width: 100%; height: 100%; }
+
+/* 
+==============================================
+تأثيرات السلاح والإرتداد (Gun & Recoil Visuals)
+==============================================
+*/
+/* سلاح الـ AKM المخفي أسفل منتصف الشاشة */
+#sassy-akm-wrapper {
+  position: fixed;
+  bottom: -20px; 
+  left: 50%;
+  width: 250px;
+  height: 80px;
+  margin-left: -30px; 
+  transform-origin: 30px 60px; /* نقطة دوران السلاح (كأنه مثبت من المقبض) */
+  z-index: 2147483649;
+  pointer-events: none;
+  transition: transform 0.05s linear;
+  display: none; /* لا يظهر إلا عند تفعيل Gun Mode عبر تغيير CSS الـ Body */
+}
+body.sassy-duck-gun-mode #sassy-akm-wrapper { display: block; }
+.akm-svg { width: 100%; height: 100%; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); transform-origin: center; }
+
+/* ارتداد السلاح الجسدي (Recoil) عند الإطلاق */
+.sassy-akm-shooting .akm-svg { animation: akm-recoil 0.1s ease-out; }
+@keyframes akm-recoil {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-20px) translateY(10px) rotate(-5deg); } /* عودة للوراء وخفض الفوهة */
+  100% { transform: translateX(0); }
+}
+
+/* الطلقة الحارقة المتتبعة التي تشيب العقل (Tracer) */
+.sassy-tracer {
+  position: fixed;
+  width: 50px; height: 4px;
+  background: #f1c40f;
+  box-shadow: 0 0 10px #f39c12, 0 0 5px #fff;
+  z-index: 2147483648;
+  pointer-events: none;
+  border-radius: 10px;
+  transition: left 0.15s linear, top 0.15s linear;
+  transform-origin: left center;
+}
+
+/* 
+==============================================
+حركات هوليود: تفادي الرصاص وقوى الماتريكس! (Matrix Dodge)
+==============================================
+*/
+.sassy-duck-matrix-dodge .duck-body-group { animation: duck-matrix 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes duck-matrix {
+  0% { transform: skewX(0); }
+  /* في المنتصف: ينبعج البطة (يتمدد للأسفل وينحني كالمايتريكس) وتتشتت ألوانه مثل صورة مهتزة ثلاثية الأبعاد ولامعة جداً */
+  30% { transform: skewX(-40deg) scaleY(0.7) translateY(20px); filter: blur(2px) drop-shadow(10px 0 #f1c40f) drop-shadow(-10px 0 #e74c3c); }
+  70% { transform: skewX(40deg) scaleY(0.7) translateY(20px); filter: blur(2px); }
+  100% { transform: skewX(0); filter: none; }
+}
+
+/* الفزع والقفزة المرتعبة (Startled Jump) عند ضرب البطة بالماوس أو محاولة الإمساك بها */
+.sassy-duck-startled { animation: duck-startled 0.4s ease-out; }
+@keyframes duck-startled {
+  0% { transform: scale(1) translateY(0); }
+  30% { transform: scale(1.1) translateY(-40px) rotate(10deg); filter: drop-shadow(0 20px 10px rgba(0,0,0,0.3)); }
+  70% { transform: scale(0.9) translateY(0) rotate(-5deg); }
+  100% { transform: scale(1) translateY(0) rotate(0); }
+}
+
+/* رقصة السعادة الجميلة (Happy Dance) عند مداعبتك لها والتوقف عن الإزعاج */
+.sassy-duck-happy-dance .duck-body-group { animation: duck-happy-dance 0.4s infinite alternate; transform-origin: center bottom; }
+@keyframes duck-happy-dance {
+  0% { transform: scaleY(0.9) rotate(-8deg); }
+  100% { transform: scaleY(1.1) rotate(8deg) translateY(-5px); }
+}
+
+/* اللهاث المتعب (Tired Panting) عندما يتعب البطة من كثرة الهروب (مقياس الغضب يرتفع) */
+.sassy-duck-tired .duck-body-group { animation: duck-tired 0.6s infinite alternate; transform-origin: center bottom; }
+@keyframes duck-tired {
+  0% { transform: scaleY(0.95); }
+  100% { transform: scaleY(1.05); }
+}
+
+/* الوقفة الساكنة التي لا تخلو من حيوية (Idle Bobbing) */
+.sassy-duck-idle .duck-body-group { animation: duck-idle 1.5s infinite alternate ease-in-out; transform-origin: center bottom; }
+@keyframes duck-idle {
+  0% { transform: scaleY(0.98); }
+  100% { transform: scaleY(1.02); }
+}
+
+/* Sleep Zzz */
+.sassy-duck-zzz {
+   position: fixed;
+   font-size: 24px;
+   font-weight: bold;
+   color: #3498db;
+   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+   pointer-events: none;
+   z-index: 2147483647;
+   animation: zzz-float 2s ease-out forwards;
+}
+@keyframes zzz-float {
+   0% { transform: translateY(0) scale(0.5); opacity: 1; }
+   100% { transform: translateY(-50px) scale(1.5) rotate(15deg); opacity: 0; }
+}
+
+/* 
+==============================================
+أنيميشن الطيران! (من الإضافات الرهيبة للمشروع)
+==============================================
+*/
+/* عندما تحلق البطة أعلى الشاشة (مبتعدة عن الشريط السفلي المطابق للأرض) سيتم إضافة هذا الكلاس */
+.sassy-duck-flying .duck-wing {
+  opacity: 1 !important; /* إظهار الجناح المبرمج في المتجه (SVG) */
+  animation: flap-wing 0.15s infinite alternate ease-in-out; /* رفتة الأجنحة المتسارعة جداً لتبدو وكأنها طائر عنيد */
+}
+.sassy-duck-flying .duck-leg { opacity: 0 !important; /* إخفاء الأرجل (ضمها للداخل أثناء الطيران) لتبدو وكأنها تحلق بحق! */ }
+.sassy-duck-flying:not(.sassy-duck-dragged) .duck-body-group {
+  transform: rotate(-10deg) translateY(-5px); /* إمالة الجسم للأمام (وضعية الطيران) */
+}
+/* تحريك الجناح عبر الدوران */
+@keyframes flap-wing {
+  0% { transform: rotate(20deg); }
+  100% { transform: rotate(-60deg); }
+}
+
+/* مود الانتقام! (Revenge Mode). البطة تتحول لشكل مرعب وظل أحمر دموي يلاحقك عندما تقتلها 3 مرات! */
+.sassy-duck-revenge { filter: drop-shadow(0 0 10px #e74c3c) !important; }
+.sassy-duck-revenge .sassy-duck-revenge-gun { opacity: 1 !important; /* تظهر السلاح الرشاش الصغير في يد البطة */ }
+
+/* صحن الطعام المقدم للبطة */
+.sassy-food-bowl {
+  position: absolute;
+  z-index: 2147483645;
+  cursor: pointer;
+  filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+  transition: transform 0.1s;
+}
+.sassy-food-bowl:hover { transform: scale(1.1); }
+
+/* الروث */
+.sassy-duck-poop {
+  position: absolute;
+  z-index: 2147483640;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+  animation: poop-drop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 
+==============================================
+اهتزاز الشاشة العنيف (Shake effect) عندما تطلق البطة النار عليك!
+==============================================
+*/
+@keyframes screen-shake {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(3px, 3px) rotate(0.5deg); }
+  50% { transform: translate(-3px, -2px) rotate(-0.5deg); }
+  75% { transform: translate(-2px, 3px) rotate(0.5deg); }
+}
+.sassy-shake { animation: screen-shake 0.1s; /* مدتها 0.1 ثانية فقط! اهتزاز عنيف وسريع */ }

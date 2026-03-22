@@ -1,0 +1,222 @@
+:root {
+  --pen: #1a1a1a;
+  --paper: #fffde7;
+  --red-ink: #c0392b;
+  --blue-ink: #2980b9;
+  --duck-yellow: #f1c40f;
+  --orange: #e67e22;
+}
+
+body.sketch-theme {
+  width: 320px;
+  background: #fdfdfd;
+  margin: 0;
+  padding: 10px;
+  font-family: 'Architects Daughter', cursive;
+  color: var(--pen);
+  transition: background 0.3s, color 0.3s;
+}
+
+.paper {
+  background-color: var(--paper);
+  background-image: radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  min-height: 520px;
+  padding: 15px;
+  border: 3px solid var(--pen);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  box-shadow: 6px 6px 0px rgba(241, 196, 15, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.sketch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.lang-switch-sketch span {
+  cursor: pointer;
+  margin-right: 10px;
+  opacity: 0.4;
+  font-weight: bold;
+  font-size: 15px;
+  transition: opacity 0.2s;
+}
+.lang-switch-sketch span.active {
+  opacity: 1;
+  border-bottom: 2px solid var(--duck-yellow);
+}
+
+.header-controls { display: flex; gap: 8px; }
+
+.icon-btn {
+  background: white;
+  border: 2px solid var(--pen);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.15);
+  transition: all 0.1s;
+}
+.icon-btn:active { transform: translate(1px,1px); box-shadow: none; }
+
+.power-off { color: var(--red-ink); border-color: var(--red-ink); }
+.power-on  { color: #27ae60; border-color: #27ae60; background: #eafaf1; }
+
+/* Duck illustration */
+.duck-illustration { text-align: center; margin: 5px 0 10px 0; }
+.pixel-duck-mini {
+  width: 40px; height: 55px;
+  margin: 0 auto;
+  position: relative;
+  transform: scale(1.8);
+  image-rendering: pixelated;
+}
+.handwritten {
+  text-align: center;
+  font-size: 26px;
+  margin: 18px 0 8px 0;
+  text-decoration: underline wavy var(--duck-yellow);
+  letter-spacing: -1px;
+}
+
+/* Stats */
+.stats-sketch { margin-bottom: 18px; }
+.stat-line { display: flex; align-items: center; margin-bottom: 12px; }
+.stat-name { width: 72px; font-size: 14px; font-weight: bold; }
+.ink-bar {
+  flex: 1; height: 10px;
+  background: rgba(0,0,0,0.06);
+  border: 2px solid var(--pen);
+  border-radius: 20px 5px 15px 5px/5px 15px 5px 20px;
+  overflow: hidden;
+  margin-left: 8px;
+}
+.ink-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.label-anger + .ink-bar .ink-fill     { background: var(--red-ink); }
+.label-happiness + .ink-bar .ink-fill { background: var(--duck-yellow); }
+.label-sleepiness + .ink-bar .ink-fill { background: var(--orange); }
+
+/* Tool buttons */
+.tools-sketch {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  margin-bottom: 18px;
+}
+.ink-btn-rect {
+  background: white;
+  border: 2px solid var(--pen);
+  padding: 9px 3px;
+  font-family: inherit; font-weight: bold; font-size: 13px;
+  cursor: pointer;
+  border-radius: 10px 5px 10px 5px/5px 10px 5px 10px;
+  box-shadow: 3px 3px 0px rgba(0,0,0,0.12);
+  transition: all 0.1s;
+}
+.ink-btn-rect:hover  { box-shadow: 4px 4px 0px var(--duck-yellow); transform: translate(-1px,-1px); }
+.ink-btn-rect:active { transform: translate(2px,2px); box-shadow: none; }
+.ink-btn-rect.tool-active { background: var(--duck-yellow); color: var(--pen); }
+
+/* Chat */
+.chat-container-sketch {
+  flex: 1; display: flex; flex-direction: column;
+  border: 2px solid var(--pen);
+  padding: 10px; margin-bottom: 12px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 5px;
+}
+.chat-logs {
+  height: 130px; overflow-y: auto; margin-bottom: 10px;
+  font-size: 13px; display: flex; flex-direction: column; gap: 8px;
+}
+.msg { padding: 6px 10px; border-radius: 5px; max-width: 88%; line-height: 1.4; }
+.user-msg { align-self: flex-end; background: #fffde7; border: 1px solid var(--duck-yellow); }
+.duck-msg { align-self: flex-start; background: #fef9c3; border: 1px solid #eab308; }
+
+.input-area-sketch { display: flex; gap: 8px; }
+.input-area-sketch input {
+  flex: 1; background: transparent; border: none;
+  border-bottom: 2px solid var(--pen);
+  font-family: inherit; padding: 6px 4px; outline: none; font-size: 13px;
+}
+.input-area-sketch button {
+  background: white; border: 2px solid var(--pen);
+  border-radius: 50%; width: 36px; height: 36px;
+  cursor: pointer; font-size: 16px;
+}
+
+/* Bottom info */
+.bottom-info { text-align: center; margin-top: 6px; }
+.status-indicator { font-size: 12px; font-weight: bold; opacity: 0.7; }
+#stateText, #duckStateText { font-weight: 800; }
+
+/* Settings View Styles */
+#settingsView {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.center { text-align: center; }
+.sketch-label { font-size: 16px; margin-bottom: 8px; font-weight: bold; }
+.sketch-hint { font-size: 11px; margin-top: 20px; opacity: 0.6; font-style: italic; }
+
+.ink-input-full {
+  width: 100%;
+  background: white;
+  border: 2px solid var(--pen);
+  padding: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  border-radius: 12px 5px 15px 5px/5px 15px 5px 12px;
+  margin-bottom: 20px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.settings-content {
+  width: 100%;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.primary-btn {
+  background: var(--duck-yellow) !important;
+  color: #000 !important;
+  font-size: 16px !important;
+  padding: 12px !important;
+}
+
+/* ===== DARK MODE ===== */
+body.sketch-theme.dark-mode {
+  background: #111;
+  --pen: #ddd;
+  --paper: #1e1e1e;
+}
+body.dark-mode .paper { border-color: #555; box-shadow: 6px 6px 0px rgba(0,0,0,0.4); }
+body.dark-mode .ink-btn-rect,
+body.dark-mode .icon-btn,
+body.dark-mode .input-area-sketch button { background: #333; color: #eee; border-color: #666; }
+body.dark-mode .ink-btn-rect.tool-active { background: var(--duck-yellow); color: #111; }
+body.dark-mode .chat-container-sketch { background: #151515; border-color: #444; }
+body.dark-mode .user-msg { background: #2a2a2a; color: #eee; border-color: #555; }
+body.dark-mode .duck-msg { background: #262200; color: #fbbf24; border-color: #444; }
+body.dark-mode .ink-bar { background: rgba(255,255,255,0.06); border-color: #555; }
+body.dark-mode .power-on { background: #1a3a28; color: #4ade80; border-color: #4ade80; }
+body.dark-mode .power-off { color: #f87171; border-color: #f87171; background: #3a1a1a; }
